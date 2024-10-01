@@ -47,7 +47,7 @@ def plot_best_selling_state(df):
     # Mengurutkan data berdasarkan order_count
     top_selling_per_state = top_selling_per_state.sort_values(by="order_count", ascending=False)
 
-    plt.figure(figsize=(12, 6))  # Memperbesar ukuran grafik
+    plt.figure(figsize=(12, 6))  
     sns.barplot(data=top_selling_per_state, x="seller_state", y="order_count", palette="Blues_d")
     plt.title("Penjualan Tertinggi per State dan Bulan")
     plt.xlabel("State")

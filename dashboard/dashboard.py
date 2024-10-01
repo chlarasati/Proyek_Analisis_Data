@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from datetime import datetime
 
-def load_data(csv_file_path):
-    return pd.read_csv(csv_file_path)
+current_directory = os.path.dirname(__file__)
+csv_file_path = os.path.join(current_directory, 'main_data.csv')
 
 def prepare_data(df):
     if "order_purchase_timestamp" in df.columns:

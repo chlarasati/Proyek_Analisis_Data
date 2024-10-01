@@ -5,17 +5,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from datetime import datetime
 
-def load_data(file_path):
-    try:
-        data = pd.read_csv(file_path)
-        return data
-    except FileNotFoundError:
-        st.error(f"File not found: {file_path}")
-    except pd.errors.ParserError:
-        st.error(f"Error parsing the file: {file_path}")
-    except Exception as e:
-        st.error(f"An error occurred: {e}")
-    return pd.DataFrame() 
+current_directory = os.path.dirname(__file__)
+csv_file_path = os.path.join(current_directory, 'main_data.csv')
 
 def prepare_data(df):
     if "order_purchase_timestamp" in df.columns:

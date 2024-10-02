@@ -38,7 +38,6 @@ def plot_monthly_sales(df):
     plt.title("Penjualan 10 Produk Teratas Per Bulan")
     plt.xlabel("Bulan")
     plt.ylabel("Total Penjualan")
-    plt.xticks(rotation=45)
     st.pyplot(plt)
 
 def plot_best_selling_state(df):
@@ -52,7 +51,6 @@ def plot_best_selling_state(df):
     plt.title("Penjualan Tertinggi per State dan Bulan")
     plt.xlabel("State")
     plt.ylabel("Total Penjualan")
-    plt.xticks(rotation=45)
     st.pyplot(plt)
 
 def plot_review_distribution(df):
@@ -75,7 +73,6 @@ def plot_monthly_sales_by_state(df, selected_state):
     plt.title(f"Penjualan di {selected_state} per Bulan")
     plt.xlabel("Bulan")
     plt.ylabel("Total Penjualan")
-    plt.xticks(rotation=45)
     st.pyplot(plt)
 
 def plot_total_sales_by_state(df):
@@ -88,7 +85,6 @@ def plot_total_sales_by_state(df):
     plt.title("Total Penjualan per State")
     plt.xlabel("State")
     plt.ylabel("Total Penjualan")
-    plt.xticks(rotation=45)
     st.pyplot(plt)
 
 def plot_sales_trends_top_products(df, selected_product):
@@ -100,7 +96,7 @@ def plot_sales_trends_top_products(df, selected_product):
     plt.title(f"Tren Penjualan {selected_product} Per Bulan")
     plt.xlabel("Bulan")
     plt.ylabel("Total Penjualan")
-    plt.xticks(range(1, 13), rotation=45)
+    plt.xticks(range(1, 13))
     st.pyplot(plt)
 
 def get_top_products(df, n=10):
@@ -167,7 +163,7 @@ def main():
         st.write("### Tren Penjualan per Bulan:")
         plot_sales_trends_top_products(filtered_data, selected_product)
 
-    # Expander untuk informasi lebih lanjut
+    # Untuk informasi lebih lanjut
     with st.expander("Insight Visualisasi"):
         st.write(
             """Dataset ini berisi informasi tentang transaksi e-commerce yang mencakup berbagai fitur seperti kategori produk, lokasi penjual, ongkos kirim, dan ulasan.

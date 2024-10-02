@@ -1,22 +1,12 @@
 import os
-import pandas as pd
 import streamlit as st
+import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 from datetime import datetime
 
-# Fungsi untuk memuat data
-def load_data(file_path):
-    try:
-        data = pd.read_csv(file_path)
-        return data
-    except FileNotFoundError:
-        st.error(f"File not found: {file_path}")
-    except pd.errors.ParserError:
-        st.error(f"Error parsing the file: {file_path}")
-    except Exception as e:
-        st.error(f"An error occurred: {e}")
-    return pd.DataFrame()
+current_directory = os.path.dirname(__file__)
+csv_file_path = os.path.join(current_directory, 'dashboard/main_data.csv')
 
 def prepare_data(df):
     if "order_purchase_timestamp" in df.columns:
@@ -129,13 +119,8 @@ def main():
     st.title("E-Commerce Product Analysis 🏆")  # Menambahkan keterangan di bawah judul
     st.write("Analisis ini mencakup penjualan bulanan dari 10 produk teratas berdasarkan total penjualan. ")
 
-    # Mendapatkan direktori tempat script berada
-    current_directory = os.path.dirname(__file__)
-    
-    # Path file CSV
-    csv_file_path = os.path.join(current_directory, 'dashboard/main_data.csv')
-    
     # Memuat data dari file utama
+    csv_file_path = "main_data.csv"  
     main_data = load_data(csv_file_path)
     main_data = prepare_data(main_data)
 
@@ -183,3 +168,15 @@ def main():
         selected_product = st.selectbox("Pilih Produk:", top_products)
         st.write("### Tren Penjualan per Bulan:")
         plot_sales_trends_top_products(filtered_data, selected_product)
+
+    # Expander untuk informasi lebih lanjut
+    with st.expander("Insight Visualisasi"):
+        st.write(
+            """Dataset ini berisi informasi tentang transaksi e-commerce yang mencakup berbagai fitur seperti kategori produk, lokasi penjual, ongkos kirim, dan ulasan.
+            Analisis menunjukkan tren penjualan per bulan dan negara bagian serta kategori produk terlaris. Insight ini dapat digunakan untuk meningkatkan strategi penjualan dan logistik.
+            """
+        )
+
+# Menjalankan aplikasi
+if __name__ == "__main__":
+    main()

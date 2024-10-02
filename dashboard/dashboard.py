@@ -5,6 +5,14 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from datetime import datetime
 
+def load_data(csv_file_path):
+    try:
+        df = pd.read_csv(csv_file_path)
+        return df
+    except FileNotFoundError:
+        st.error("File tidak ditemukan. Pastikan file CSV ada di jalur yang benar.")
+        return pd.DataFrame()  # Mengembalikan DataFrame kosong jika file tidak ditemukan
+
 current_directory = os.path.dirname(__file__)
 csv_file_path = os.path.join(current_directory, 'dashboard/main_data.csv')
 

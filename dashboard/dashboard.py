@@ -182,4 +182,4 @@ def main():
         top_products = get_top_products(filtered_data)
         selected_product = st.selectbox("Pilih Produk:", top_products)
         st.write("### Tren Penjualan per Bulan:")
-        plot_sales_trends_top_products(filtered_data, selected_product
+        plot_sales_trends_top_products(filtered_data, selected_product)

@@ -22,25 +22,6 @@ def prepare_data(df):
         st.error("Kolom 'order_purchase_timestamp' tidak ditemukan dalam dataset.")
     return df
 
-def plot_monthly_sales(df):
-    # Menghitung total penjualan per produk
-    total_sales_per_product = df.groupby(["product_id", "product_category_name"])["order_item_id"].count().reset_index()
-    total_sales_per_product.rename(columns={"order_item_id": "total_sales"}, inplace=True)
-
-    # Mendapatkan 10 produk teratas
-    top_10_products = total_sales_per_product.nlargest(10, "total_sales")["product_id"]
-
-    monthly_trend_products = df[df["product_id"].isin(top_10_products)].groupby(["purchase_month", "product_id"])["order_item_id"].count().reset_index()
-    monthly_trend_products.rename(columns={"order_item_id": "total_sales"}, inplace=True)
-
-    plt.figure(figsize=(10, 5))
-    sns.barplot(data=monthly_trend_products, x="purchase_month", y="total_sales", hue="product_id", palette="Blues_d")
-    plt.title("Penjualan 10 Produk Teratas Per Bulan")
-    plt.xlabel("Bulan")
-    plt.ylabel("Total Penjualan")
-    plt.xticks(rotation=45)
-    st.pyplot(plt)
-
 def plot_best_selling_state(df):
     best_selling_state = df.groupby(["seller_state", "purchase_month", "product_category_name"]).size().reset_index(name="order_count")
     top_selling_per_state = best_selling_state.loc[best_selling_state.groupby("seller_state")["order_count"].idxmax()]
@@ -62,20 +43,6 @@ def plot_review_distribution(df):
     plt.xlabel("Skor Ulasan")
     plt.ylabel("Frekuensi")
     plt.grid(axis="y")
-    st.pyplot(plt)
-
-def plot_monthly_sales_by_state(df, selected_state):
-    filtered_data = df[df["seller_state"] == selected_state]
-    monthly_sales = filtered_data.groupby("purchase_month")["order_item_id"].count().reset_index()
-
-    monthly_sales = monthly_sales.sort_values(by="order_item_id", ascending=False)
-
-    plt.figure(figsize=(10, 5))
-    sns.barplot(data=monthly_sales, x="purchase_month", y="order_item_id", palette="Blues_d")
-    plt.title(f"Penjualan di {selected_state} per Bulan")
-    plt.xlabel("Bulan")
-    plt.ylabel("Total Penjualan")
-    plt.xticks(rotation=45)
     st.pyplot(plt)
 
 def plot_total_sales_by_state(df):
@@ -110,7 +77,7 @@ def get_top_products(df, n=10):
 
 def main():
     st.title("E-Commerce Product Analysis 🏆")
-    st.write("Analisis ini mencakup penjualan bulanan dari 10 produk teratas berdasarkan total penjualan. ")
+    st.write("Analisis ini mencakup penjualan bulanan dari 10 produk teratas berdasarkan total penjualan.")
 
     # Memuat data dari file CSV menggunakan jalur yang sudah ditentukan
     if os.path.exists(csv_file_path):
@@ -151,7 +118,7 @@ def main():
     with tab_monthly_sales:
         selected_state = st.selectbox("Pilih State:", filtered_data['seller_state'].unique())
         st.write("### Penjualan Bulanan:")
-        plot_monthly_sales_by_state(filtered_data, selected_state)
+        plot_total_sales_by_state(filtered_data)  # Menampilkan total penjualan per state
 
     with tab_overview:
         st.write("### Total Penjualan Per State:")

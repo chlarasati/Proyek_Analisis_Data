@@ -6,7 +6,7 @@ import seaborn as sns
 from datetime import datetime
 
 current_directory = os.path.dirname(__file__)
-csv_file_path = os.path.join(current_directory, 'main_data.csv')
+csv_file_path = os.path.join(current_directory, 'dashboard/main_data.csv')
 
 def prepare_data(df):
     if "order_purchase_timestamp" in df.columns:

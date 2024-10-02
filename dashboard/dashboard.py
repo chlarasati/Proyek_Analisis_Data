@@ -121,10 +121,6 @@ def main():
         st.write("### Total Penjualan Per State:")
         plot_total_sales_by_state(filtered_data)
 
-        selected_state_overview = st.selectbox("Pilih State untuk Overview:", filtered_data['seller_state'].unique())
-        st.write(f"### Penjualan Bulanan di {selected_state_overview}:")
-        plot_monthly_sales_by_state(filtered_data, selected_state_overview)
-
     with tab_trends:
         top_products = get_top_products(filtered_data)
         selected_product = st.selectbox("Pilih Produk:", top_products)

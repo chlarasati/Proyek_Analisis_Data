@@ -5,10 +5,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from datetime import datetime
 
-import os
-import pandas as pd
-import streamlit as st
-
 def load_data(file_path):
     try:
         data = pd.read_csv(file_path)

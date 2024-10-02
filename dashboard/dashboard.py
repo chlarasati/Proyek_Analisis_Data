@@ -5,17 +5,11 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from datetime import datetime
 
-def load_data(csv_file_path):
-    try:
-        df = pd.read_csv(csv_file_path)
-        return df
-    except FileNotFoundError:
-        st.error("File tidak ditemukan. Pastikan file CSV ada di jalur yang benar.")
-        return pd.DataFrame()  # Mengembalikan DataFrame kosong jika file tidak ditemukan
-
+# Mendapatkan direktori saat ini
 current_directory = os.path.dirname(__file__)
 csv_file_path = os.path.join(current_directory, 'dashboard/main_data.csv')
 
+# Fungsi untuk mempersiapkan data
 def prepare_data(df):
     if "order_purchase_timestamp" in df.columns:
         # Mengonversi 'order_purchase_timestamp' menjadi format datetime
@@ -47,12 +41,10 @@ def plot_monthly_sales(df):
     plt.xticks(rotation=45)
     st.pyplot(plt)
 
-# Fungsi untuk menampilkan penjualan terbanyak per state dan bulan
 def plot_best_selling_state(df):
     best_selling_state = df.groupby(["seller_state", "purchase_month", "product_category_name"]).size().reset_index(name="order_count")
     top_selling_per_state = best_selling_state.loc[best_selling_state.groupby("seller_state")["order_count"].idxmax()]
 
-    # Mengurutkan data berdasarkan order_count
     top_selling_per_state = top_selling_per_state.sort_values(by="order_count", ascending=False)
 
     plt.figure(figsize=(12, 6))  
@@ -63,7 +55,6 @@ def plot_best_selling_state(df):
     plt.xticks(rotation=45)
     st.pyplot(plt)
 
-# Fungsi untuk menampilkan distribusi skor ulasan
 def plot_review_distribution(df):
     plt.figure(figsize=(10, 5))
     sns.histplot(df["review_score"], bins=5, kde=True, color="darkblue")
@@ -73,12 +64,10 @@ def plot_review_distribution(df):
     plt.grid(axis="y")
     st.pyplot(plt)
 
-# Fungsi untuk menampilkan penjualan bulanan berdasarkan state yang dipilih
 def plot_monthly_sales_by_state(df, selected_state):
     filtered_data = df[df["seller_state"] == selected_state]
     monthly_sales = filtered_data.groupby("purchase_month")["order_item_id"].count().reset_index()
 
-    # Mengurutkan data berdasarkan total penjualan
     monthly_sales = monthly_sales.sort_values(by="order_item_id", ascending=False)
 
     plt.figure(figsize=(10, 5))
@@ -89,7 +78,6 @@ def plot_monthly_sales_by_state(df, selected_state):
     plt.xticks(rotation=45)
     st.pyplot(plt)
 
-# Fungsi untuk menampilkan total penjualan per state
 def plot_total_sales_by_state(df):
     total_sales_state = df.groupby("seller_state")["order_item_id"].count().reset_index()
     total_sales_state.rename(columns={"order_item_id": "total_sales"}, inplace=True)
@@ -103,9 +91,7 @@ def plot_total_sales_by_state(df):
     plt.xticks(rotation=45)
     st.pyplot(plt)
 
-# Fungsi untuk menampilkan tren penjualan produk teratas per bulan
 def plot_sales_trends_top_products(df, selected_product):
-    # Menghitung penjualan bulanan untuk produk teratas yang dipilih
     product_sales_trends = df[df["product_id"] == selected_product].groupby(["purchase_month"])["order_item_id"].count().reset_index()
     product_sales_trends.rename(columns={"order_item_id": "total_sales"}, inplace=True)
 
@@ -117,19 +103,23 @@ def plot_sales_trends_top_products(df, selected_product):
     plt.xticks(range(1, 13), rotation=45)
     st.pyplot(plt)
 
-# Fungsi untuk menampilkan semua produk teratas
 def get_top_products(df, n=10):
     total_sales_per_product = df.groupby("product_id")["order_item_id"].count().reset_index()
     total_sales_per_product.rename(columns={"order_item_id": "total_sales"}, inplace=True)
     return total_sales_per_product.nlargest(n, "total_sales")["product_id"]
 
 def main():
-    st.title("E-Commerce Product Analysis 🏆")  # Menambahkan keterangan di bawah judul
+    st.title("E-Commerce Product Analysis 🏆")
     st.write("Analisis ini mencakup penjualan bulanan dari 10 produk teratas berdasarkan total penjualan. ")
 
-    # Memuat data dari file utama
-    csv_file_path = "main_data.csv"  
-    main_data = load_data(csv_file_path)
+    # Memuat data dari file CSV menggunakan jalur yang sudah ditentukan
+    if os.path.exists(csv_file_path):
+        main_data = pd.read_csv(csv_file_path)
+    else:
+        st.error("File CSV tidak ditemukan di jalur yang ditentukan.")
+        return
+
+    # Siapkan data
     main_data = prepare_data(main_data)
 
     # Sidebar untuk rentang waktu

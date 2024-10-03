@@ -1,1 +1,1 @@
-dashboard-catharine.streamlit.pp
+dashboard-catharine.streamlit.app

@@ -3,5 +3,3 @@ seaborn
 matplotlib
 numpy
 pandas
-os
-datetime
